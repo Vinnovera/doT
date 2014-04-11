@@ -132,7 +132,6 @@
 			str = "String.prototype.encodeHTML=(" + encodeHTMLSource.toString() + "());" + str;
 		}
 		try {
-			console.log(str);
 			return new Function(c.varname, str);
 		} catch (e) {
 			if (typeof console !== 'undefined') console.log("Could not create a template function: " + str);

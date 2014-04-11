@@ -59,3 +59,26 @@ describe('doT Extended', function(){
 		});
 	});
 });
+
+/*describe('doT the rest of it', function(){
+	var
+		arraytemplate = "{{~it.foo :value:index}}<div>{{=value}}</div>{{~}}",
+		arraycompiled = doT.template(arraytemplate);
+		namespacetemplate = "<div>{{=it.foo}}{{=part.foo}}</div>",
+		namespacecompiled = doT.template(namespacetemplate);
+
+
+	describe('#template()', function(){
+		it('should return a function', function(){
+		   assert.equal("function", typeof arraycompiled);
+		});
+	});
+
+	describe('array', function(){
+		it('should render the array values', function(){
+		   assert.equal("<div>http</div>", arraycompiled({foo:["http"]}));
+		   assert.equal("<div>http:&#47;&#47;abc.com</div>", arraycompiled({foo:["http:&#47;&#47;abc.com"]}));
+		   assert.equal("{{~it.foo :value:index}}<div>{{=value}}</div>{{~}}", arraycompiled({}));
+		});
+	});
+});*/
