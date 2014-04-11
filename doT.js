@@ -8,7 +8,7 @@
 	var doT = {
 		version: '1.0.1',
 		templateSettings: {
-			evaluate:    /\{\{([\s\S]+?(\}?)+)\}\}/g,
+			evaluate:    /\<\%([\s\S]+?(\}?)+)\%\>/g,
 			interpolate: /\{\{=([\s\S]+?)\}\}/g,
 			encode:      /\{\{!([\s\S]+?)\}\}/g,
 			use:         /\{\{#([\s\S]+?)\}\}/g,
@@ -17,7 +17,7 @@
 			defineParams:/^\s*([\w$]+):([\s\S]+)/,
 			conditional: /\{\{\?(\?)?\s*([\s\S]*?)\s*\}\}/g,
 			iterate:     /\{\{~\s*(?:\}\}|([\s\S]+?)\s*\:\s*([\w$]+)\s*(?:\:\s*([\w$]+))?\s*\}\})/g,
-			varname:	'it',
+			varname:	'it, part',
 			strip:		true,
 			append:		true,
 			selfcontained: false
@@ -47,8 +47,8 @@
 	var startend = {
 		append: {
 			start: "'+(",
-			end: ")+'",
-			midencode: "||'",
+			end: "')+'",
+			mid: "||'",
 			endencode: "').toString().encodeHTML()+'"
 		},
 		split: {
@@ -103,11 +103,11 @@
 					.replace(/\r|\n|\t|\/\*[\s\S]*?\*\//g,''): str)
 			.replace(/'|\\/g, '\\$&')
 			.replace(c.interpolate || skip, function(m, code) {
-				return cse.start + unescape(code) + "||'" + m +"'" + cse.end;
+				return cse.start + unescape(code) + cse.mid + m +cse.end;
 			})
 			.replace(c.encode || skip, function(m, code) {
 				needhtmlencode = true;
-				return cse.start + unescape(code) + cse.midencode + m + cse.endencode;
+				return cse.start + unescape(code) + cse.mid + m + cse.endencode;
 			})
 			.replace(c.conditional || skip, function(m, elsecase, code) {
 				return elsecase ?
@@ -120,9 +120,9 @@
 				return "';var arr"+sid+"="+iterate+";if(arr"+sid+"){var "+vname+","+indv+"=-1,l"+sid+"=arr"+sid+".length-1;while("+indv+"<l"+sid+"){"
 					+vname+"=arr"+sid+"["+indv+"+=1];out+='";
 			})
-			/*.replace(c.evaluate || skip, function(m, code) {
+			.replace(c.evaluate || skip, function(m, code) {
 				return "';" + unescape(code) + "out+='";
-			})*/
+			})
 			+ "';return out;")
 			.replace(/\n/g, '\\n').replace(/\t/g, '\\t').replace(/\r/g, '\\r')
 			.replace(/(\s|;|\}|^|\{)out\+='';/g, '$1').replace(/\+''/g, '')

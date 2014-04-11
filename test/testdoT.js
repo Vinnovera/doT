@@ -33,7 +33,7 @@ describe('doT Extended', function(){
 	var
 		interpolatetemplate = "<div>{{=it.foo}}</div>",
 		interpolatecompiled = doT.template(interpolatetemplate);
-		namespacetemplate = "<div>{{=it.foo}}{{=part.foo}}</bar>",
+		namespacetemplate = "<div>{{=it.foo}}{{=part.foo}}</div>",
 		namespacecompiled = doT.template(namespacetemplate);
 
 
@@ -53,9 +53,9 @@ describe('doT Extended', function(){
 
 	describe('namespace', function(){
 		it('should render it namespace and leave part namespace intact', function(){
-		   assert.equal("<div>http{{=part.foo}}</div>", namespacecompiled({foo:"http"}));
-		   assert.equal("<div>http:&#47;&#47;abc.com{{=part.foo}}</div>", namespacecompiled({foo:"http://abc.com"}));
-		   assert.equal("<div>{{=it.foo}}{{=part.foo}}</div>", namespacecompiled({}));
+		   assert.equal("<div>http{{=part.foo}}</div>", namespacecompiled({foo:"http"},{}));
+		   assert.equal("<div>http:&#47;&#47;abc.com{{=part.foo}}</div>", namespacecompiled({foo:"http:&#47;&#47;abc.com"},{}));
+		   assert.equal("<div>{{=it.foo}}{{=part.foo}}</div>", namespacecompiled({},{}));
 		});
 	});
 });
