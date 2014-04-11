@@ -31,6 +31,8 @@ describe('doT', function(){
 
 describe('doT Extended', function(){
 	var
+		interpolatetemplate = "<div>{{=it.foo}}</div>",
+		interpolatecompiled = doT.template(interpolatetemplate);
 		namespacetemplate = "<div>{{=it.foo}}{{=part.foo}}</bar>",
 		namespacecompiled = doT.template(namespacetemplate);
 
@@ -43,9 +45,9 @@ describe('doT Extended', function(){
 
 	describe('#()', function(){
 		it('should render the template', function(){
-		   assert.equal("<div>http</div>", namespacecompiled({foo:"http"}));
-		   assert.equal("<div>http:&#47;&#47;abc.com</div>", namespacecompiled({foo:"http://abc.com"}));
-		   assert.equal("<div>{{=it.foo}}</div>", namespacecompiled({}));
+		   assert.equal("<div>http</div>", interpolatecompiled({foo:"http"}));
+		   assert.equal("<div>http:&#47;&#47;abc.com</div>", interpolatecompiled({foo:"http:&#47;&#47;abc.com"}));
+		   assert.equal("<div>{{=it.foo}}</div>", interpolatecompiled({}));
 		});
 	});
 
