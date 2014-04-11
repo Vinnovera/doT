@@ -31,8 +31,9 @@ describe('doT', function(){
 
 describe('doT Extended', function(){
 	var
-		namespacetemplate = "<div>{{!it.foo}}{{=part.foo}}</bar>",
+		namespacetemplate = "<div>{{=it.foo}}{{=part.foo}}</bar>",
 		namespacecompiled = doT.template(namespacetemplate);
+
 
 	describe('#template()', function(){
 		it('should return a function', function(){
@@ -40,11 +41,19 @@ describe('doT Extended', function(){
 		});
 	});
 
+	describe('#()', function(){
+		it('should render the template', function(){
+		   assert.equal("<div>http</div>", namespacecompiled({foo:"http"}));
+		   assert.equal("<div>http:&#47;&#47;abc.com</div>", namespacecompiled({foo:"http://abc.com"}));
+		   assert.equal("<div>{{=it.foo}}</div>", namespacecompiled({}));
+		});
+	});
+
 	describe('namespace', function(){
-		it('should render it namespace', function(){
+		it('should render it namespace and leave part namespace intact', function(){
 		   assert.equal("<div>http{{=part.foo}}</div>", namespacecompiled({foo:"http"}));
 		   assert.equal("<div>http:&#47;&#47;abc.com{{=part.foo}}</div>", namespacecompiled({foo:"http://abc.com"}));
-		   assert.equal("<div>{{!it.foo}}{{=part.foo}}</bar>", namespacecompiled({}));
+		   assert.equal("<div>{{=it.foo}}{{=part.foo}}</div>", namespacecompiled({}));
 		});
 	});
 });

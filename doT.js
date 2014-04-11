@@ -45,8 +45,17 @@
 	String.prototype.encodeHTML = encodeHTMLSource();
 
 	var startend = {
-		append: { start: "'+(",      end: ")+'",      endencode: "||'').toString().encodeHTML()+'" },
-		split:  { start: "';out+=(", end: ");out+='", endencode: "||'').toString().encodeHTML();out+='"}
+		append: {
+			start: "'+(",
+			end: ")+'",
+			midencode: "||'",
+			endencode: "').toString().encodeHTML()+'"
+		},
+		split: {
+			start: "';out+=(", 
+			end: ");out+='",
+			endencode: "||'').toString().encodeHTML();out+='"
+		}
 	}, skip = /$^/;
 
 	function resolveDefs(c, block, def) {
@@ -98,7 +107,7 @@
 			})
 			.replace(c.encode || skip, function(m, code) {
 				needhtmlencode = true;
-				return cse.start + unescape(code) + cse.endencode;
+				return cse.start + unescape(code) + cse.midencode + m + cse.endencode;
 			})
 			.replace(c.conditional || skip, function(m, elsecase, code) {
 				return elsecase ?
@@ -111,9 +120,9 @@
 				return "';var arr"+sid+"="+iterate+";if(arr"+sid+"){var "+vname+","+indv+"=-1,l"+sid+"=arr"+sid+".length-1;while("+indv+"<l"+sid+"){"
 					+vname+"=arr"+sid+"["+indv+"+=1];out+='";
 			})
-			.replace(c.evaluate || skip, function(m, code) {
+			/*.replace(c.evaluate || skip, function(m, code) {
 				return "';" + unescape(code) + "out+='";
-			})
+			})*/
 			+ "';return out;")
 			.replace(/\n/g, '\\n').replace(/\t/g, '\\t').replace(/\r/g, '\\r')
 			.replace(/(\s|;|\}|^|\{)out\+='';/g, '$1').replace(/\+''/g, '')
@@ -123,6 +132,7 @@
 			str = "String.prototype.encodeHTML=(" + encodeHTMLSource.toString() + "());" + str;
 		}
 		try {
+			console.log(str);
 			return new Function(c.varname, str);
 		} catch (e) {
 			if (typeof console !== 'undefined') console.log("Could not create a template function: " + str);
