@@ -97,18 +97,17 @@
 	function ifObj(code){
 		var 
 			parts = code.split('.'),
-			obj = '',
+			obj = parts[0],
 			result = '(',
 			len = parts.length,
-			i = 0;
+			i = 1;
 
 		for(; i < len; i++) {
-			if(i) {
+			if(i < 1) {
 				result += '&&';
-				obj += '.';
 			}
 
-			obj += parts[i];
+			obj += '.' + parts[i];
 
 			result += obj;
 		}
