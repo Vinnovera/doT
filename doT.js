@@ -94,6 +94,30 @@
 		return code.replace(/\\('|\\)/g, "$1").replace(/[\r\t\n]/g, ' ');
 	}
 
+	function ifObj(code){
+		var 
+			parts = code.split('.'),
+			obj = '',
+			result = '(',
+			len = parts.length,
+			i = 0;
+
+		for(; i < len; i++) {
+			if(i) {
+				result += '&&';
+				obj += '.';
+			}
+
+			obj += parts[i];
+
+			result += obj;
+		}
+
+		result += ')';
+
+		return result;
+	}
+
 	doT.template = function(tmpl, c, def) {
 		c = c || doT.templateSettings;
 		var cse = c.append ? startend.append : startend.split, needhtmlencode, sid = 0, indv,
@@ -105,13 +129,13 @@
 			.replace(c.interpolate || skip, function(m, code) {
 
 				var ueCode = unescape(code);
-				return cse.start + '(typeof ' + ueCode + ' !== "undefined") ? ' + ueCode + ":'" + m +cse.end;
+				return cse.start + ifObj(ueCode) + '?' + ueCode + ":'" + m +cse.end;
 			})
 			.replace(c.encode || skip, function(m, code) {
 				var ueCode = unescape(code);
-				
+
 				needhtmlencode = true;
-				return cse.start + '(typeof ' + ueCode + ' !== "undefined") ? ' + ueCode + ":'" + m + cse.endencode;
+				return cse.start + ifObj(ueCode) + '?' + ueCode + ":'" + m + cse.endencode;
 			})
 			.replace(c.conditional || skip, function(m, elsecase, code) {
 				return elsecase ?
