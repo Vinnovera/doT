@@ -36,7 +36,9 @@ describe('doT Extended', function(){
 		namespacetemplate = "<div>{{=it.foo}}{{=part.foo}}</div>",
 		namespacecompiled = doT.template(namespacetemplate),
 		iterationtemplate = "<div>{{~it.foo :value:index}}{{=value}}{{~}}</div>",
-		iterationcompiled = doT.template(iterationtemplate);
+		iterationcompiled = doT.template(iterationtemplate),
+		nestedtemplate = "<div>{{!it.f.o.o}}</div>"
+		nestedcompiled = doT.template(nestedtemplate);
 
 
 	describe('#template()', function(){
@@ -61,11 +63,15 @@ describe('doT Extended', function(){
 		});
 	});
 
-	describe('iteration', function(){
+	describe('iteration', function() {
 		it('should render the iteration', function(){
 			assert.equal("<div>http://abc.com</div>", iterationcompiled({foo: ['http://', 'abc.com']}, {}));
-			/*assert.equal("<div>http:&#47;&#47;abc.com{{=part.foo}}</div>", iterationcompiled({foo:"http:&#47;&#47;abc.com"},{}));
-			assert.equal("<div>{{=it.foo}}{{=part.foo}}</div>", iterationcompiled({},{}));*/
+		});
+	});
+
+	describe('Nested', function() {
+		it('should render the iteration', function(){
+			assert.equal("<div>abc.com</div>", nestedcompiled({f: {o: {o: 'abc.com'}}}, {}));
 		});
 	});
 });

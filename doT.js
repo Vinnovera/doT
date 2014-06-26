@@ -104,7 +104,7 @@
 
 		if(len > 1) {
 			for(; i < len; i++) {
-				if(i < 1) {
+				if(i > 1) {
 					result += '&&';
 				}
 
