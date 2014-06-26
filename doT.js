@@ -102,13 +102,17 @@
 			len = parts.length,
 			i = 1;
 
-		for(; i < len; i++) {
-			if(i < 1) {
-				result += '&&';
+		if(len > 1) {
+			for(; i < len; i++) {
+				if(i < 1) {
+					result += '&&';
+				}
+
+				obj += '.' + parts[i];
+
+				result += obj;
 			}
-
-			obj += '.' + parts[i];
-
+		} else {
 			result += obj;
 		}
 

@@ -34,7 +34,9 @@ describe('doT Extended', function(){
 		interpolatetemplate = "<div>{{=it.foo}}</div>",
 		interpolatecompiled = doT.template(interpolatetemplate);
 		namespacetemplate = "<div>{{=it.foo}}{{=part.foo}}</div>",
-		namespacecompiled = doT.template(namespacetemplate);
+		namespacecompiled = doT.template(namespacetemplate),
+		iterationtemplate = "<div>{{~it.foo :value:index}}{{=value}}{{~}}</div>",
+		iterationcompiled = doT.template(iterationtemplate);
 
 
 	describe('#template()', function(){
@@ -45,17 +47,25 @@ describe('doT Extended', function(){
 
 	describe('#()', function(){
 		it('should render the template', function(){
-		   assert.equal("<div>http</div>", interpolatecompiled({foo:"http"}));
-		   assert.equal("<div>http:&#47;&#47;abc.com</div>", interpolatecompiled({foo:"http:&#47;&#47;abc.com"}));
-		   assert.equal("<div>{{=it.foo}}</div>", interpolatecompiled({}));
+			assert.equal("<div>http</div>", interpolatecompiled({foo:"http"}));
+			assert.equal("<div>http:&#47;&#47;abc.com</div>", interpolatecompiled({foo:"http:&#47;&#47;abc.com"}));
+			assert.equal("<div>{{=it.foo}}</div>", interpolatecompiled({}));
 		});
 	});
 
 	describe('namespace', function(){
 		it('should render it namespace and leave part namespace intact', function(){
-		   assert.equal("<div>http{{=part.foo}}</div>", namespacecompiled({foo:"http"},{}));
-		   assert.equal("<div>http:&#47;&#47;abc.com{{=part.foo}}</div>", namespacecompiled({foo:"http:&#47;&#47;abc.com"},{}));
-		   assert.equal("<div>{{=it.foo}}{{=part.foo}}</div>", namespacecompiled({},{}));
+			assert.equal("<div>http{{=part.foo}}</div>", namespacecompiled({foo:"http"},{}));
+			assert.equal("<div>http:&#47;&#47;abc.com{{=part.foo}}</div>", namespacecompiled({foo:"http:&#47;&#47;abc.com"},{}));
+			assert.equal("<div>{{=it.foo}}{{=part.foo}}</div>", namespacecompiled({},{}));
+		});
+	});
+
+	describe('iteration', function(){
+		it('should render the iteration', function(){
+			assert.equal("<div>http://abc.com</div>", iterationcompiled({foo: ['http://', 'abc.com']}, {}));
+			/*assert.equal("<div>http:&#47;&#47;abc.com{{=part.foo}}</div>", iterationcompiled({foo:"http:&#47;&#47;abc.com"},{}));
+			assert.equal("<div>{{=it.foo}}{{=part.foo}}</div>", iterationcompiled({},{}));*/
 		});
 	});
 });
